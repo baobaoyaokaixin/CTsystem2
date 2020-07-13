@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html>
+{% include 'head.html' %}
+  <body>
+    <div class="page">
+      <!-- Main Navbar-->
+      <header class="header">
+          {% include 'main_nav.html' %}
+      </header>
+      <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+      {% include 'side_nav.html' %}
+        <div class="content-inner">
+          <!-- Page Header-->
+          <header class="page-header">
+            <div class="container-fluid">
+              <h2 class="no-margin-bottom">Your Records</h2>
+            </div>
+          </header>
+          <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Certificate Record</h3> {% if certificate_record %}
+{#                                <td><a href="{% url 'tracksys:certDetail' cecid=cecid  %}"><button class="btn btn-rounded" style="background: transparent">More  <i class="fa fa-share"></i></button></a></td>#}
+                            {% endif %}
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                          <thead>
+                            <tr>
+                                <th>&nbsp;&nbsp;</th>
+                                <th>Name</th>
+                                <th>Exam Date</th>
+                                <th>Score Date</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                                <th></th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for c in certificate_record.certificate_info %}
+                                {% if c.status == 'true' %}
+                                <tr>
+                                <td><i class="fa fa-book" style="font-size: 200%"></i></td>
+                                    <td><a href="{% url 'tracksys:viewCertRecordDetail' cid=c.uuid %}">{{ c.certificate_name }}</a></td>
+                                <td>{{ c.exam_date }}</td>
+                                <td> {{ c.score_date }}</td>
+                                <td>
+                                    <a href="{% url 'tracksys:editCertPage' cid=c.uuid %}"><i class="fa fa-refresh" style="font-size: 180%"></i></a><br>
+                                </td>
+                                <td>
+                                    <a href="{% url 'tracksys:deleteCertificateRecord' cid=c.uuid%}" onclick="return del()"><i class="fa fa-remove"style="font-size: 180%"></i></a><br>
+                                </td>
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Training Record</h3>
+                        {% if training_record %}
+                                <a href="{% url 'tracksys:trainingDetail' cecid=cecid %}"><button class="btn btn-rounded" style="background: transparent">More  <i class="fa fa-share"></i></button></a>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                          <thead>
+                            <tr>
+                                <th>&nbsp;&nbsp;</th>
+                                <th>Name</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Description</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                           {% for t in training %}
+                               {% if t.status %}
+                                <tr>
+
+                                <td>{{ t.training_name }}</td>
+                                <td>{{ t.start_date }}</td>
+                                   <td>{{ t.end_date }}</td>
+
+                                <td>{{ t.description }}</td>
+                                <td>
+                                    <a href="{% url 'tracksys:trainingAction' value=t.id action='update' %}" ><i class="fa fa-refresh"style="font-size: 200%"></i> </a><br>
+                                  </td>
+                                  <td>
+                                    <a href="{% url 'tracksys:trainingAction' value=t.id action='delete' %}" onclick="javascript:return del()"><i class="fa fa-remove"style="font-size: 200%" ></i></a>
+                                </td>
+                               {% endif %}
+                            {% endfor %}
+
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+
+          <!-- Page Footer-->
+          <footer class="main-footer">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>Copyright &copy; 2019 Cisco SBS All rights reserved.</p>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <p></p>
+
+                </div>
+              </div>
+            </div>
+          </footer>
+
+    <!-- JavaScript files-->
+
+        <script>
+            function del() {
+    var msg = "Do you want to delete this record???";
+    if (confirm(msg)==true){
+    return true;
+}else{
+return false;
+}
+}
+        </script>
+
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="/static/vendor/chart.js/Chart.min.js"></script>
+    <script src="/static/vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="/static/js/charts-home.js"></script>
+    <!-- Main File-->
+    <script src="/static/js/front.js"></script>
+        </div></body>
+</html>

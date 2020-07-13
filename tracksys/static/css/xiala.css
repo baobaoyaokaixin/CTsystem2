@@ -1,0 +1,17 @@
+*{margin: 0;padding: 0}
+body{font-size: 60px;font-family: "宋体","微软雅黑";}
+ul,li{list-style: none;}
+a:link,a:visited{text-decoration: none;}
+.list{width: 800px;border-bottom:solid 1px #ffffff;margin:40px auto 0 auto;}
+.list ul li{background-color:#b1e2f3; border:solid 1px #ffffff; border-bottom:0;}
+.list ul li a{padding-left: 10px;color: #000000; font-size:14px; display: block; font-weight:bold; height:40px;line-height: 36px;position: relative;
+}
+.list ul li .inactive{ background:url('/static/assets/images/off.png') no-repeat 780px center;}
+.list ul li .inactives{background:url('/static/assets/images/on.png') no-repeat 780px center;}
+.list ul li ul{display: none;}
+.list ul li ul li { border-left:0; border-right:0; background-color:#b1e2f3; border-color:#ffffff;}
+.list ul li ul li ul{display: none;}
+.list ul li ul li a{ padding-left:20px;}
+.list ul li ul li ul li { background-color:#b1e2f3; border-color:#ffffff; }
+.last{ background-color:#b1e2f3; border-color:#ffffff; }
+.list ul li ul li ul li a{ color:#000000; padding-left:30px;}

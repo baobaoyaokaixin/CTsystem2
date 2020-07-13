@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+{% include 'head.html' %}
+<body>
+<div class="page">
+    <!-- Main Navbar-->
+    <header class="header">
+        {% include 'main_nav.html' %}
+    </header>
+    <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+    {% include 'side_nav.html' %}
+        <div class="content-inner">
+            <!-- Page Header-->
+            <header class="page-header">
+                <div class="container-fluid">
+                    <h2 class="no-margin-bottom" style="font-family: DengXian">Manager Tree</h2>
+                </div>
+            </header>
+            <div class="card-header d-flex align-items-center">
+                <h3 class="no-margin-bottom" style="font-family: DengXian"> You directly report to :{{ manager.name }}</h3>
+            </div>
+            <!-- Feeds Section-->
+            <section class="feeds no-padding-top">
+
+
+                <div class="container-fluid">
+                    <div id="stree">
+                        <div class="table-responsive">
+                            <table class="table table-hover" style="column-width:10px;border-top-color:silver">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for u in manager_list %}
+
+
+
+                                    <tr id="{{ u.cecid }}">
+
+                                        <td>
+                                            <img src="https://wwwin.cisco.com/dir/photo/zoom/{{ u.cecid }}.jpg"
+                                                 width="10%"
+                                                 class="img-fluid rounded-circle">
+                                            <button value="{{ u.cecid }}" type="button" id="{{ u.cecid }}"
+                                                    class="btn btn-rounded" style="background: transparent" name="{{ u.cecid }}hide"><i
+                                                    class="fa fa-plus"></i></button>
+                                            <br>
+
+                                            <a href="{% url 'tracksys:user_view' cid=u.cecid %}"><label
+                                                    style="font-size: small">{{ u.name }}</label></a>
+
+
+
+{#                                            <button id="{{ u.cecid }}hide"  style="background: transparent" class="btn btn-rounded">#}
+{#                                                -#}
+{#                                            </button>&nbsp;&nbsp;#}
+{#                                            <button id="{{ u.cecid }}show" style="background: transparent" class="btn btn-rounded" >#}
+{#                                                +#}
+{#                                            </button>#}
+                                            <button type="button" data-toggle="modal" data-target="#myModal"
+                                                    class="btn btn-rounded" style="background: transparent"
+                                                    name="groupsummary" value="{{ u.cecid }}"><i
+                                                    class="fa fa-group"></i>
+                                            </button>
+
+                                        </td>
+
+
+                                    </tr>
+                                    
+
+                                {% endfor %}
+
+                                <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                     aria-hidden="true" class="modal fade text-left">
+                                    <div role="document" class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 id="exampleModalLabel" class="modal-title">Summary</h4>
+                                                <button type="button" data-dismiss="modal" aria-label="Close"
+                                                        class="close">
+                                                    <span aria-hidden="true">×</span></button>
+                                            </div>
+
+
+                                            <div class="modal-body">
+                                                <p><strong>Here are some details of group:</strong></p>
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label>Group member count: </label>&nbsp;&nbsp;<p
+                                                            id="mcount"></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>CCIE Record count:</label>&nbsp;&nbsp;<p
+                                                            id="count"></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Certificate type total count:</label>&nbsp;&nbsp;<p
+                                                            id="typecount"></p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label></label>&nbsp;&nbsp;<p id="type"></p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" data-dismiss="modal"
+                                                                class="btn btn-secondary">Close
+                                                        </button>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% for u in none_manager_list %}
+                                    <div>
+                                    <tr id="{{ u.cecid }}">
+                                        <td><img src="https://wwwin.cisco.com/dir/photo/zoom/{{ u.cecid }}.jpg"
+                                                 width="10%"
+                                                 class="img-fluid rounded-circle"><br>
+                                            <a href="{% url 'tracksys:user_view' cid=u.cecid %}"><label
+                                                    style="font-size: small; ">{{ u.name }}</label></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </div>
+                                </tbody>
+                            </table>
+{#                            <script>#}
+{#                                {% for m in mgrs %}#}
+{#                                        $(document).ready(function () {#}
+{#                                            $("#{{ m }}hide").click(function () {#}
+{#                                                $("div#{{ m }}").hide();#}
+{#                                            });#}
+{#                                            $("#{{ m }}show").click(function () {#}
+{#                                                $("div#{{ m }}").show();#}
+{#                                            });#}
+{#                                        });#}
+{#                                {% endfor %}#}
+{#                                    </script>#}
+                            <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+                            <script language="JavaScript">
+
+                                {% for m in mgrs %}
+                                    $('body').on('click', 'button#{{ m.cecid }}', function () {
+                                        if($('div#{{ m.cecid }}').length==0){
+                                        $.ajax({
+                                            url: '/managerTree/',
+                                            data: {"mgrid": $(this).val()},
+                                            type: 'GET',
+                                            dataType: 'json',
+
+
+                                            success: function (data) {
+                                                var content = '';
+                                                var con = '';
+                                                var mgrid = data['mgrid'];
+                                                var sub = data['none_manager_list'];
+                                                var dir = data['manager_list'];
+                                                $.each(sub, function (i, item) {
+
+                                                    content += '<tr id="' + item.cecid + '">' + '<td>' + '<img src="https://wwwin.cisco.com/dir/photo/zoom/' + item.cecid + '.jpg" width="10%" class="img-fluid rounded-circle">' + '<br>' + '<a href=' + '/users/' + item.cecid + '>' + '<label style="font-size: small">' + item.name + ' '  + '</label>' + '</a>' + '</td>' + '</tr>'
+                                                });
+                                                $.each(dir, function (i, item) {
+                                                    con += '<tr id=' + item.cecid + '>' + '<td>' + '<img src="https://wwwin.cisco.com/dir/photo/zoom/' + item.cecid + '.jpg" width="10%" class="img-fluid rounded-circle">' + '<button type="button" id="' + item.cecid + '" class="btn btn-rounded" style="background: transparent"  value="' + item.cecid +'">' + '<i class="fa fa-plus">' + '</i>' + '</button>' + '<a href=' + '/users/' + item.cecid + '>' + item.name + ' ' + '</a>' + '<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-rounded" style="background: transparent" name="groupsummary" value="' + item.cecid + '" >' + '<i class="fa fa-group"></i> ' + '</button>' + '</td>' + '</tr>'
+
+                                                });
+                                                $('tr#' + mgrid).append('<div id="'+mgrid+'">'+'</div>');
+                                                $('div[id='+mgrid+']').html(con+content)
+                                                $('button#{{ m.cecid }}').html('<i class="fa fa-minus"></i>');
+
+
+                                            },
+
+
+                                        })
+                                        }else {
+                                            if($('div#{{ m.cecid }}').length > 0){
+                                                if($('div#{{ m.cecid }}').is(':hidden')){
+                                                    $('div#{{ m.cecid }}').show();
+                                                    $('button#{{ m.cecid }}').html('<i class="fa fa-minus"></i>');
+                                                }
+                                                else {
+                                                    $('div#{{ m.cecid }}').hide();
+                                                    $('button#{{ m.cecid }}').html('<i class="fa fa-plus"></i>');
+                                                }
+
+                                            }
+
+
+
+                                            }
+
+
+
+                                    });
+
+                                {% endfor %}
+                            </script>
+                            <script language="JavaScript">
+                                $('body').on('click', "[name='groupsummary']", function () {
+                                    $.ajax({
+
+                                        url: '/details/',
+                                        data: {"mgrid": $(this).val()},
+                                        type: 'GET',
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            var mcount = data['mcount'];
+                                            var count = data['count'];
+
+                                            $('#mcount').html(mcount);
+                                            $('#count').html(count);
+
+
+
+                                        }
+                                    })
+                                });
+
+                            </script>
+
+                        </div>
+                    </div>
+                    <button id="hide" class="btn btn-secondary">Collapse</button>&nbsp;&nbsp;
+                    <button id="show" class="btn btn-secondary">Expand</button>
+
+            </section>
+
+
+            <!-- Page Footer-->
+            <footer class="main-footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6" align="right">
+                            <p>Copyright &copy; 2019 Cisco SBS All rights reserved.</p>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <p></p>
+
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+            <!-- JavaScript files-->
+            <script src="/static/assets/plugins/jquery/jquery.min.js"></script>
+            <script src="/static/vendor/jquery/jquery.min.js"></script>
+            <script src="/static/vendor/popper.js/umd/popper.min.js"></script>
+            <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+            <script src="/static/vendor/jquery.cookie/jquery.cookie.js"></script>
+            <script src="/static/vendor/chart.js/Chart.min.js"></script>
+            <script src="/static/vendor/jquery-validation/jquery.validate.min.js"></script>
+            <script src="/static/js/charts-home.js"></script>
+            <!-- Main File-->
+            <script src="/static/js/front.js"></script>
+        </div>
+    </div>
+</body>
+</html>

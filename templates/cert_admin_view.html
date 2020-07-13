@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html>
+{% include 'head.html' %}
+  <body>
+    <div class="page">
+      <!-- Main Navbar-->
+      <header class="header">
+          {% include 'main_nav.html' %}
+      </header>
+      <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+      {% include 'side_nav.html' %}
+        <div class="content-inner">
+          <!-- Page Header-->
+          <header class="page-header">
+            <div class="container-fluid">
+              <h2 class="no-margin-bottom">All Certificate</h2>
+                <div style="float:right">
+{#                    <select id = "certificate_type" class="form-control">#}
+{#                        {% for i in certificate_type %}#}
+{#                        <option value="{{ i }}">{{ i }}</option>#}
+{#                                {% endfor %}#}
+{#                    </select>#}
+                <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+                    <script language="JavaScript">
+                   $("#certificate_type").change(function() {
+                       $.ajax({
+
+                            url: '/cert_type/',
+
+                            data: {"cert_type": $(this).val()},
+                            type: 'GET',
+                            dataType: 'json',
+                        });
+
+                })
+</script>
+                </div>
+            </div>
+          </header>
+          <div class="card-header d-flex align-items-center">
+
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-striped table-hover" >
+                          <thead>
+                            <tr>
+                                <th>&nbsp;&nbsp;</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Active Duration</th>
+                                <th>Description</th>
+                                <th>Priority</th>
+                                <th></th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for c in certificates %}
+                                <tr>
+                                <td><i class="fa fa-book" style="font-size: 200%"></i></td><td><a href="{% url 'tracksys:editCertPageAdmin' cid=c.id %}">{{ c.certificate_name }}</a></td>
+                                <td>{{ c.certificate_type }}</td>
+                                <td> {{ c.active_duration }}</td>
+                                <td>
+                                    {{ c.description }}
+                                </td>
+                                <td>
+                                    {{ c.priority }}
+                                </td>
+                                </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+
+
+
+
+          <!-- Page Footer-->
+          <footer class="main-footer">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>Copyright &copy; 2019 Cisco SBS All rights reserved.</p>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <p></p>
+
+                </div>
+              </div>
+            </div>
+          </footer>
+
+    <!-- JavaScript files-->
+
+        <script>
+            function del() {
+    var msg = "Do you want to delete this record???";
+    if (confirm(msg)==true){
+    return true;
+}else{
+return false;
+}
+}
+        </script>
+
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="/static/vendor/chart.js/Chart.min.js"></script>
+    <script src="/static/vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="/static/js/charts-home.js"></script>
+    <!-- Main File-->
+    <script src="/static/js/front.js"></script>
+        </div></body>
+</html>

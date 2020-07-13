@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+{% include "head.html" %}
+  <body>
+    <div class="page">
+      <!-- Main Navbar-->
+      <header class="header">
+{% include 'main_nav.html' %}
+      </header>
+      <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+{% include 'side_nav.html' %}
+          <div class="content-inner">
+          <!-- Page Header-->
+          <header class="page-header">
+            <div class="container-fluid">
+              <h2 class="no-margin-bottom">Your Records</h2>
+            </div>
+          </header>
+          <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Edit Certificate Record</h3>
+                    </div>
+                    <div class="card-body">
+                     <section class="forms" style="margin-left: 200px">
+            <div class="container-fluid" >
+              <div class="row">
+                <!-- Basic Form-->
+                <div class="col-lg-auto">
+                  <div class="card" style="width: 60%">
+                     <div class="card-body" >
+
+                      <form method="post" id="" action="{% url 'tracksys:updateCertificateRecord' %}"  enctype="multipart/form-data">
+                        <label class="form-control-label">Certificate Type:</label>
+
+                        <div class='form-group' >
+                           <select class="form-control" name="certificate_type" id="certificate_type">
+                              {% for i in certificate_type %}
+                                  {% if i == certificate_record.certificate_type %}
+                               <option value="{{ i }}" selected>{{ i }}</option>
+                                  {% else %}
+                                      <option value="{{ i }}" >{{ i }}</option>
+                                  {% endif %}
+                               {% endfor %}
+                          </select>
+                        </div>
+                       <label class="form-control-label">Certificate Name:</label>
+
+                        <div class='form-group' >
+                            <select class="form-control" name="certificate_name" id="certificate_name">
+                                <option value="{{ certificate_record.certificate_name }}">{{ certificate_record.certificate_name }}</option>
+                            </select>
+                            <input class="form-control" name="certificate_others" id="certificate_others" type="text" style="display:none">
+                        </div>
+                          <label class="form-control-label">Exam Date</label>
+                      <div class="form-group">
+                        <input class="form-control" name="exam_date" id="exam_date" type="date" placeholder="Exam Date" value = "{{ certificate_record.exam_date }}" required/>
+                      </div>
+                          <label class="form-control-label">Score Date</label>
+                          <div class="form-group">
+                              <input type="date" class="form-control" name="score_date" id="score_date" placeholder="Score Date" value = "{{ certificate_record.score_date }}" required/>
+                          </div>
+                          <label class="form-control-label">Record Description</label>
+                      <div class="form-group">
+                          <textarea class="form-control" name="description" id="record_description" placeholder="Record Description">{{ certificate_record.description }}</textarea>
+                      </div>
+                          <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+                          <script language="JavaScript">
+   $("#certificate_type").change(function() {
+    var cert_type = $(this).val();
+    if (cert_type == 'Other Certificate') {
+        $('#certificate_name').hide();
+        $('#certificate_others').show();
+
+            }
+     else{
+         $('#certificate_others').hide();
+        $('#certificate_name').show();}
+
+       $.ajax({
+
+            url: '/certAjax/',
+
+            data: {"cert_type": cert_type},
+            type: 'GET',
+            dataType: 'json',
+
+            success: function (data) {
+                var content = '';
+                $.each(data, function (i, item) {
+                    content += '<option value="' + item.certificate_name + '">' + item.certificate_name + '</option>'
+                });
+                $('#certificate_name').html(content);
+                $('#certificate_others').html()
+            },
+
+        });
+
+})
+</script>
+
+                          <div>
+                              <label class="form-control-label">Upload your Certificate(jpg/png):<br><br></label>
+
+                          <div class="col-sm-12">
+                               <input type="file" name='upload' class="form-control-file" id="upload" placeholder=".jpg" >
+                               <input type="file" name='upload' class="form-control-file" id="upload" placeholder=".jpg" >
+                          </div>
+                        </div>
+                          <br><br>
+                        <div class="form-group">
+                          <input type="submit" value="Save" class="btn btn-primary" onclick="return add()">
+                        </div>
+                          <input type="hidden" value = "{{ certificate_record.uuid }}" name="uuid"/>
+                      </form>
+                    </div>
+                  </div>
+
+              </div>
+              </div></div>
+          </section>
+                    </div>
+
+
+
+
+
+
+
+          <!-- Page Footer-->
+          <footer class="main-footer">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>Copyright &copy; 2019 Cisco SBS All rights reserved.</p>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <p></p>
+
+                </div>
+              </div>
+            </div>
+          </footer>
+
+    <!-- JavaScript files-->
+             <script>
+            function add() {
+    var msg = "Do you want to edit this record???";
+    if (confirm(msg)==true){
+    return true;
+}else{
+return false;
+}
+}
+        </script>
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="/static/vendor/chart.js/Chart.min.js"></script>
+    <script src="/static/vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="/static/js/charts-home.js"></script>
+    <!-- Main File-->
+    <script src="/static/js/front.js"></script>
+        </body>
+</html>
