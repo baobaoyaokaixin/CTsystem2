@@ -21,9 +21,12 @@
 
                       </ul>
                     </li>
-                    <li><a href="{% url 'tracksys:addCertPage' %}" > <i class="icon-grid"></i>Add a Certificate Record</a></li>
           {% if title == "Certificate Admin" %}
                     <li><a href="{% url 'tracksys:add_cert_info_page' %}" > <i class="icon-grid"></i>Add a New Certificate </a></li>
+              {% elif title == "People Admin View" %}
+                                  <li><a href="{% url 'tracksys:addAdmin' %}" > <i class="icon-grid"></i>Add a New Admin </a></li>
+              {% else %}
+                                  <li><a href="{% url 'tracksys:addCertPage' %}" > <i class="icon-grid"></i>Add a Certificate Record</a></li>
           {% endif %}
 {#                    <li><a href="{% url 'tracksys:trainingAdd' %}"> <i class="fa fa-bar-chart"></i>Add a Training Record</a></li>#}
 {#                    <li><a href="{% url 'tracksys:userupdate' %}"> <i class="icon-padnote"></i>Manage Profile</a></li>#}

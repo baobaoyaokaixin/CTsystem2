@@ -31,6 +31,7 @@ urlpatterns = [
     path('details/',views.groupSummary, name='details'),
     path('editCertPageAdmin/<str:cid>', views.edit_cert_info_page, name='editCertPageAdmin'),
     path('editCert/', views.edit_cert_info, name='editCert'),
+    path('addAdmin',views.addAdminPage, name='addAdmin')
 
 ]
 urlpatterns += static('/viewCertRecordDetail/', document_root=settings.UPLOADFILES_ROOT)

@@ -256,8 +256,18 @@ def user_view(request, cid):
 
 
 def peopleAdminView(request):
-    pass
+    title = "People Admin View"
+    cecid = request.session.get('user')
+    p_admin, c_admin, AA, mgr, support_admin, user = information(request)
+    adminList = admin_collection.find({}, {"_id":0})
+    return render(request, 'people_admin_view.html', locals())
 
+
+def addAdminPage(request):
+    title = "People Admin View"
+    cecid = request.session.get('user')
+    p_admin, c_admin, AA, mgr, support_admin, user = information(request)
+    return render(request, 'add_admin.html', locals())
 
 def certificateAdminView(request):
     pass
@@ -353,6 +363,7 @@ def downloadReport(request):
                 "certificate_type": "",
                 "exam_date": "",
                 "score_date": "",
+                "directManager": user.get("manager"),
             }
             info_lst.append(dic)
         else:
@@ -709,3 +720,5 @@ def groupSummary(request):
         'count': ccie_count
     }
     return JsonResponse(data=data, safe=False)
+
+
